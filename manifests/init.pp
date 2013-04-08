@@ -32,7 +32,6 @@
 # monit_httpd_port:           what port should the httpd run on?
 #                             Default: 2812
 #
-#
 # monit_mailserver:           where should monit be sending mail?
 #                             set this to the mailserver
 #                             Default: localhost
@@ -40,24 +39,15 @@
 # monit_pool_interval:        how often (in seconds) should monit poll?
 #                             Default: 120
 #
-class monit {
-  # The monit_secret is used with the fqdn of the host to make a
-  # password for the monit http server.
-  $monit_default_secret='This is not very secret, is it?'
+class monit(
+  $monit_enable_httpd  = 'no',
+  $monit_httpd_port    = 2812,
+  $monit_secret        = 'This is not very secret, is it?',
+  $monit_alert         = 'root@localhost',
+  $monit_mailserver    = 'localhost',
+  $monit_pool_interval = '120'
+) {
 
-  # The default alert recipient.  You can override this by setting the
-  # variable "$monit_alert" in your node specification.
-  $monit_default_alert='root@localhost'
-
-  # How often should the daemon pool? Interval in seconds.
-  case $monit_pool_interval {
-    '': { $monit_pool_interval = '120' }
-  }
-
-  # Should the httpd daemon be enabled, or not? By default it is not
-  case $monit_enable_httpd {
-    '': { $monit_enable_httpd = 'no' }
-  }
   # The package
   package { 'monit':
     ensure => installed,
