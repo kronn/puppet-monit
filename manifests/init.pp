@@ -104,9 +104,9 @@ class monit {
   }
 
   # Monit is disabled by default on debian / ubuntu
-  case $operatingsystem {
-    "debian": {
-      file { "/etc/default/monit":
+  case $::osfamily {
+    'Debian': {
+      file { '/etc/default/monit':
         content => "startup=1\nCHECK_INTERVALS=${monit_pool_interval}\n",
         before  => Service['monit']
       }
