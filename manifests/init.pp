@@ -40,15 +40,14 @@
 # monit_pool_interval:        how often (in seconds) should monit poll?
 #                             Default: 120
 #
-
 class monit {
   # The monit_secret is used with the fqdn of the host to make a
   # password for the monit http server.
-  $monit_default_secret="This is not very secret, is it?"
+  $monit_default_secret='This is not very secret, is it?'
 
   # The default alert recipient.  You can override this by setting the
   # variable "$monit_alert" in your node specification.
-  $monit_default_alert="root@localhost"
+  $monit_default_alert='root@localhost'
 
   # How often should the daemon pool? Interval in seconds.
   case $monit_pool_interval {
@@ -60,47 +59,47 @@ class monit {
     '': { $monit_enable_httpd = 'no' }
   }
   # The package
-  package { "monit":
+  package { 'monit':
     ensure => installed,
   }
 
   # The service
-  service { "monit":
+  service { 'monit':
     ensure  => running,
-    require => Package["monit"],
+    require => Package['monit'],
   }
 
   # How to tell monit to reload its configuration
-  exec { "monit reload":
-    command     => "/usr/sbin/monit reload",
+  exec { 'monit reload':
+    command     => '/usr/sbin/monit reload',
     refreshonly => true,
   }
 
   # Default values for all file resources
   File {
-    owner   => "root",
-    group   => "root",
+    owner   => 'root',
+    group   => 'root',
     mode    => 0400,
-    notify  => Exec["monit reload"],
-    require => Package["monit"],
+    notify  => Exec['monit reload'],
+    require => Package['monit'],
   }
 
   # The main configuration directory, this should have been provided by
   # the "monit" package, but we include it just to be sure.
-  file { "/etc/monit":
+  file { '/etc/monit':
     ensure  => directory,
     mode    => 0700,
   }
 
   # The configuration snippet directory.  Other packages can put
   # *.monitrc files into this directory, and monit will include them.
-  file { "/etc/monit/conf.d":
+  file { '/etc/monit/conf.d':
     ensure  => directory,
     mode    => 0700,
   }
 
   # The main configuration file
-  file { "/etc/monit/monitrc":
+  file { '/etc/monit/monitrc':
     content => template("monit/monitrc.erb"),
   }
 
@@ -109,14 +108,14 @@ class monit {
     "debian": {
       file { "/etc/default/monit":
         content => "startup=1\nCHECK_INTERVALS=${monit_pool_interval}\n",
-        before  => Service["monit"]
+        before  => Service['monit']
       }
     }
   }
 
   # A template configuration snippet.  It would need to be included,
   # since monit's "include" statement cannot handle an empty directory.
-  monit::snippet{ "monit_template":
+  monit::snippet{ 'monit_template':
     source => "puppet://$server/modules/monit/template.monitrc",
   }
 }
