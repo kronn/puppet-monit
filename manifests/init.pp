@@ -42,7 +42,8 @@
 class monit(
   $monit_enable_httpd  = 'no',
   $monit_httpd_port    = 2812,
-  $monit_secret        = 'This is not very secret, is it?',
+  $monit_password      = 'This is not very secret, is it?',
+  $monit_user          = 'monit',
   $monit_alert         = 'root@localhost',
   $monit_mailserver    = 'localhost',
   $monit_pool_interval = '120'

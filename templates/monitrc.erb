@@ -6,19 +6,10 @@
 set alert <%= monit_alert %>
 
 <%- if monit_enable_httpd.to_s == 'yes' then -%>
-<%# BEGIN functions %>
-<%
-require 'digest/sha1'
-
-def password
-  return Digest::SHA1.hexdigest(monit_secret.to_s + Digest::SHA1.hexdigest(monit_secret.to_s + fqdn.to_s))
-end
-%>
-<%# END functions %>
-
-set httpd port <%= monit_httpd_port %> and use address localhost
-    allow localhost
-    allow monit:<%= password %>
+set httpd port <%= monit_httpd_port %>
+    # use address localhost
+    # allow localhost
+    allow <%= monit_user %>:<%= monit_password %>
 <%- end -%>
 
 set daemon <%= monit_pool_interval %>
