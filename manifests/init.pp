@@ -47,6 +47,7 @@ class monit(
   $monit_mailserver    = 'localhost',
   $monit_pool_interval = '120'
 ) {
+  $fqdn = $::fqdn
 
   # The package
   package { 'monit':
@@ -90,6 +91,7 @@ class monit(
 
   # The main configuration file
   file { '/etc/monit/monitrc':
+    ensure  => present,
     content => template("monit/monitrc.erb"),
   }
 

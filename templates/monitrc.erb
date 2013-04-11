@@ -11,13 +11,7 @@ set alert <%= monit_alert %>
 require 'digest/sha1'
 
 def password
-  if defined?(monit_secret)
-    s = monit_secret
-  else
-    s = monit_default_secret
-  end
-
-  return Digest::SHA1.hexdigest(s + Digest::SHA1.hexdigest(s + fqdn))
+  return Digest::SHA1.hexdigest(monit_secret.to_s + Digest::SHA1.hexdigest(monit_secret.to_s + fqdn.to_s))
 end
 %>
 <%# END functions %>
