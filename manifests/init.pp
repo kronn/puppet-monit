@@ -80,20 +80,20 @@ class monit(
   # the "monit" package, but we include it just to be sure.
   file { '/etc/monit':
     ensure  => directory,
-    mode    => 0700,
+    mode    => '0700',
   }
 
   # The configuration snippet directory.  Other packages can put
   # *.monitrc files into this directory, and monit will include them.
   file { '/etc/monit/conf.d':
     ensure  => directory,
-    mode    => 0700,
+    mode    => '0700',
   }
 
   # The main configuration file
   file { '/etc/monit/monitrc':
     ensure  => present,
-    content => template("monit/monitrc.erb"),
+    content => template('monit/monitrc.erb'),
   }
 
   # Monit is disabled by default on debian / ubuntu
@@ -103,6 +103,8 @@ class monit(
         content => "startup=1\nCHECK_INTERVALS=${monit_pool_interval}\n",
         before  => Service['monit']
       }
+    }
+    default : {
     }
   }
 

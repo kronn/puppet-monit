@@ -21,24 +21,24 @@
 #     customlines => ["if failed port 22 then restart"]
 #   }
 # (end)
-define monit::snippet($ensure=present,$target="",$source="",$content="") {
-	file {"/etc/monit/conf.d/$name.monitrc":
-                ensure => $ensure,
-		owner   => "root",
-		group   => "root",
-		mode    => 0400,
-		notify  => Service["monit"],
-                content => $content ? {
-                        ""      => undef,
-                        default => $content
-                },
-                source => $source ? {
-                        ""      => undef,
-                        default => $source
-                },
-                target => $target ? {
-                        ""      => undef,
-                        default => $target
-                },
-        }
+define monit::snippet($ensure=present, $target='', $source='', $content='') {
+  file {"/etc/monit/conf.d/$name.monitrc":
+    ensure  => $ensure,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0400',
+    notify  => Service['monit'],
+    content => $content ? {
+      ''      => undef,
+      default => $content
+    },
+    source => $source ? {
+      ''      => undef,
+      default => $source
+    },
+    target => $target ? {
+      ''      => undef,
+      default => $target
+    },
+  }
 }
