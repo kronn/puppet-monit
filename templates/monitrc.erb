@@ -3,18 +3,18 @@
 # This file is handled by puppet, any local changes will be lost
 #
 
-set alert <%= monit_alert %>
+set alert <%= @monit_alert %>
 
-<%- if monit_enable_httpd.to_s == 'yes' then -%>
-set httpd port <%= monit_httpd_port %>
+<%- if @monit_enable_httpd.to_s == 'yes' then -%>
+set httpd port <%= @monit_httpd_port %>
     # use address localhost
     # allow localhost
-    allow <%= monit_user %>:<%= monit_password %>
+    allow <%= @monit_user %>:<%= @monit_password %>
 <%- end -%>
 
-set daemon <%= monit_pool_interval %>
+set daemon <%= @monit_pool_interval %>
 set logfile syslog facility log_daemon
-set mailserver <%= monit_mailserver %>
+set mailserver <%= @monit_mailserver %>
 
 # Include settings from other files
 include /etc/monit/conf.d/*.monitrc
