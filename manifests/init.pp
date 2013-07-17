@@ -95,6 +95,7 @@ class monit(
   }
 
   # The main configuration file
+  $mailname = $::mailname
   file { '/etc/monit/monitrc':
     ensure  => present,
     content => template('monit/monitrc.erb'),

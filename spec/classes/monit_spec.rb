@@ -18,9 +18,44 @@ describe 'monit' do
     })
   end
 
-  it 'writes logs to syslog by default' do
-    should contain_file('/etc/monit/monitrc').
-      with_content(/set logfile syslog facility log_daemon/)
+  context 'by default' do
+    it 'writes logs to syslog' do
+      should contain_file('/etc/monit/monitrc').
+        with_content(/set logfile syslog facility log_daemon/)
+    end
+
+    it 'does not specifiy a mail-hostname' do
+      should_not contain_file('/etc/monit/monitrc').
+        with_content(/using hostname/)
+    end
+  end
+
+  context 'sends mails' do
+    let(:params) do
+      {
+        'monit_mailserver' => 'smtp.example.net
+      port 25
+      username "tom-tester"
+      password "password1"
+        '
+      }
+    end
+    let(:facts) do
+      { :mailname => 'externalname.example.net' }
+    end
+
+    it 'using the right hostname' do
+      should contain_file('/etc/monit/monitrc').
+        with_content(/using hostname "externalname\.example\.net"/)
+    end
+
+    it 'to a configurable server' do
+      should contain_file('/etc/monit/monitrc').
+        with_content(/set mailserver smtp.example.net/).
+        with_content(/port 25/).
+        with_content(/username "tom-tester"/).
+        with_content(/password "password1"/)
+    end
   end
 
   context 'logs output' do
