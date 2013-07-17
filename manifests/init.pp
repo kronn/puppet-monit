@@ -39,6 +39,9 @@
 # monit_pool_interval:        how often (in seconds) should monit poll?
 #                             Default: 120
 #
+# monit_log_location:         where should monit write logs to?
+#                             Default: syslog
+#
 class monit(
   $monit_enable_httpd  = 'no',
   $monit_httpd_port    = 2812,
@@ -46,7 +49,8 @@ class monit(
   $monit_user          = 'monit',
   $monit_alert         = 'root@localhost',
   $monit_mailserver    = 'localhost',
-  $monit_pool_interval = '120'
+  $monit_pool_interval = '120',
+  $monit_log_location  = 'syslog facility log_daemon'
 ) {
   $fqdn = $::fqdn
 
