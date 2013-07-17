@@ -2,7 +2,7 @@
 # Creates a monit configuration snippet in /etc/monit/conf.d/
 #
 # Parameters:
-#   namevar - the name of this resource will be used for the configuration file name
+#   namevar - the name will be used for the configuration file name
 #   ensure  - present or absent
 #   content - as for the "file" type
 #   source  - as for the "file" type
@@ -22,23 +22,29 @@
 #   }
 # (end)
 define monit::snippet($ensure=present, $target='', $source='', $content='') {
-  file {"/etc/monit/conf.d/$name.monitrc":
+  $file_content = $content ? {
+    ''      => undef,
+    default => $content
+  }
+
+  $file_source  = $source ? {
+    ''      => undef,
+    default => $source
+  }
+
+  $file_target  = $target ? {
+    ''      => undef,
+    default => $target
+  }
+
+  file {"/etc/monit/conf.d/${name}.monitrc":
     ensure  => $ensure,
     owner   => 'root',
     group   => 'root',
     mode    => '0400',
     notify  => Service['monit'],
-    content => $content ? {
-      ''      => undef,
-      default => $content
-    },
-    source => $source ? {
-      ''      => undef,
-      default => $source
-    },
-    target => $target ? {
-      ''      => undef,
-      default => $target
-    },
+    content => $file_content,
+    source  => $file_source,
+    target  => $file_target,
   }
 }

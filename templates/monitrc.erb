@@ -13,9 +13,12 @@ set httpd port <%= @monit_httpd_port %>
 <%- end -%>
 
 set daemon <%= @monit_pool_interval %>
-<%# set logfile syslog facility log_daemon %>
-set logfile /var/log/monit.log
+set logfile <%= @monit_log_location %>
 set mailserver <%= @monit_mailserver %>
+<% if @mailname != nil %>
+    using hostname "<%= @mailname %>"
+<% end %>
+
 
 # Include settings from other files
 include /etc/monit/conf.d/*.monitrc
