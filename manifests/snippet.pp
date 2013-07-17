@@ -22,17 +22,17 @@
 #   }
 # (end)
 define monit::snippet($ensure=present, $target='', $source='', $content='') {
-  $content = $content ? {
+  $file_content = $content ? {
     ''      => undef,
     default => $content
   }
 
-  $source  = $source ? {
+  $file_source  = $source ? {
     ''      => undef,
     default => $source
   }
 
-  $target  = $target ? {
+  $file_target  = $target ? {
     ''      => undef,
     default => $target
   }
@@ -43,8 +43,8 @@ define monit::snippet($ensure=present, $target='', $source='', $content='') {
     group   => 'root',
     mode    => '0400',
     notify  => Service['monit'],
-    content => $content,
-    source  => $source,
-    target  => $target,
+    content => $file_content,
+    source  => $file_source,
+    target  => $file_target,
   }
 }
