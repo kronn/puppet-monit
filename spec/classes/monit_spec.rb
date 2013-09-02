@@ -36,8 +36,7 @@ describe 'monit' do
         'monit_mailserver' => 'smtp.example.net
       port 25
       username "tom-tester"
-      password "password1"
-        '
+      password "password1"'
       }
     end
     let(:facts) do
@@ -55,6 +54,12 @@ describe 'monit' do
         with_content(/port 25/).
         with_content(/username "tom-tester"/).
         with_content(/password "password1"/)
+    end
+
+    it 'omits empty line before hostname' do
+      should contain_file('/etc/monit/monitrc') .
+        with_content /password "password1"
+      using hostname "externalname.example.net"/
     end
   end
 
