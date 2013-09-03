@@ -67,7 +67,8 @@ class monit(
 
   # How to tell monit to reload its configuration
   exec { 'monit reload':
-    command     => '/usr/sbin/monit reload',
+    command     => 'monit reload',
+    path        => ['/usr/bin', '/usr/sbin'],
     refreshonly => true,
   }
 

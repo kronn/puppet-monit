@@ -18,6 +18,17 @@ describe 'monit' do
     })
   end
 
+  it 'reloads monit on config changes' do
+    should contain_exec('Exec[monit reload]').with({
+      'command'     => 'monit reload',
+      'path'        => ['/usr/bin', '/usr/sbin'],
+      'refreshonly' => true
+    })
+
+    should contain_file('/etc/monit/monitrc').
+      with_notify('Exec[monit reload]')
+  end
+
   context 'by default' do
     it 'writes logs to syslog' do
       should contain_file('/etc/monit/monitrc').
