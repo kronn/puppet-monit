@@ -61,7 +61,7 @@ describe 'monit' do
 
     it 'setting the right "From:"' do
       should contain_file('/etc/monit/monitrc').
-        with_content(/^mail-format \{ from: monit@externalname\.example\.net \}$/m)
+        with_content(/^set mail-format \{ from: monit@externalname\.example\.net \}$/m)
     end
 
     it 'to a configurable server' do
