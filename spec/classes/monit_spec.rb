@@ -12,14 +12,14 @@ describe 'monit' do
   end
 
   it 'configures monit' do
-    should contain_file('/etc/monit/monitrc').with({
-      'ensure'  => 'present',
-      'content' => /set daemon/
-    })
+    should contain_file('/etc/monit/monitrc').
+      with_ensure('present').
+      with_content(/set daemon/).
+      with_content(/^include /)
   end
 
   it 'reloads monit on config changes' do
-    should contain_exec('Exec[monit reload]').with({
+    should contain_exec('monit reload').with({
       'command'     => 'monit reload',
       'path'        => ['/usr/bin', '/usr/sbin'],
       'refreshonly' => true
