@@ -121,7 +121,7 @@ class monit(
       }
       file { '/etc/default/monit':
         ensure  => present,
-        content => "# managed by puppet\n$default_boot\n$default_interval",
+        content => "# managed by puppet\n${default_boot}\n${default_interval}",
         before  => Service['monit'],
       }
     }
