@@ -6,6 +6,9 @@ check process <%= @name %>
   with pidfile "<%= @pidfile %>"
   start program = "<%= @start %>" <%= @start_extras %>
   stop program  = "<%= @stop %>" <%= @stop_extras %>
+<% if @depends -%>
+  depends on <%= @depends %>
+<% end -%>
 <% Array(@customlines).each do |line| -%>
   <%= line %>
 <% end -%>

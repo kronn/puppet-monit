@@ -36,7 +36,8 @@ define monit::check::process(
   $start_extras = '',
   $stop         = "/etc/init.d/${name} stop",
   $stop_extras  = '',
-  $customlines  = ''
+  $customlines  = '',
+  $depends      = undef,
 ) {
   file {"/etc/monit/conf.d/${name}.monitrc":
     ensure  => $ensure,

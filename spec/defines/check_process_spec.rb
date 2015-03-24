@@ -11,8 +11,9 @@ describe 'monit::check::process' do
         'group'   => 'root',
         'mode'    => '0400',
         'notify'  => 'Service[monit]',
-        'content' => /check process postgres/
-      })
+      }).
+      with_content(/check process postgres/).
+      without_content(/depends on/)
     end
   end
 
@@ -25,6 +26,7 @@ describe 'monit::check::process' do
         :stop         => '/bin/kill -9 2342',
         :start_extras => 'as uid appworker and gid application',
         :stop_extras  => 'and using the sum',  # pure noise words, ignored by monit
+        :depends      => 'systemd-database',
         :customlines  => [
           'group workers'
         ]
@@ -42,6 +44,7 @@ describe 'monit::check::process' do
   with pidfile "/var/run/workerz.pid"
   start program = "/usr/local/bin/background start" as uid appworker and gid application
   stop program  = "/bin/kill -9 2342" and using the sum
+  depends on systemd-database
   group workers!m
       })
     end
