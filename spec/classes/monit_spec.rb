@@ -6,6 +6,13 @@ describe 'monit' do
     should contain_service('monit').with_ensure('running')
   end
 
+  it 'starts the service at boot' do
+    should contain_file('/etc/default/monit').
+      with_ensure('present').
+      with_content(/^MONIT_OPTS="-d 120"/).
+      with_content(/^START=yes/)
+  end
+
   it 'prevents missing directories' do
     should contain_file('/etc/monit').with_ensure('directory')
     should contain_file('/etc/monit/conf.d').with_ensure('directory')

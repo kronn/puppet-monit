@@ -105,9 +105,24 @@ class monit(
   # Monit is disabled by default on debian / ubuntu
   case $::osfamily {
     'Debian': {
+      case $::lsbdistcodename {
+        # untested and therefore disabled
+        # 'squeeze', 'lucid': {
+        #   $default_boot      = 'startup=1'
+        #   $default_interval  = "CHECK_INTERVALS=${monit_pool_interval}"
+        #   $service_hasstatus = false
+        # }
+        default: {
+          $default_boot      = 'START=yes'
+          $default_interval  = "MONIT_OPTS=\"-d ${monit_pool_interval}\""
+        # untested and therefore disabled
+        #   $service_hasstatus = true
+        }
+      }
       file { '/etc/default/monit':
-        content => "startup=1\nCHECK_INTERVALS=${monit_pool_interval}\n",
-        before  => Service['monit']
+        ensure  => present,
+        content => "# managed by puppet\n$default_boot\n$default_interval",
+        before  => Service['monit'],
       }
     }
     default : {
