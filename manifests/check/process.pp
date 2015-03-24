@@ -47,5 +47,12 @@ define monit::check::process(
     content => template('monit/check_process.monitrc.erb'),
     notify  => Service['monit'],
   }
+
+  # TODO a proper puppet-relation could be helpful (or not, depending on the use-case)
+  # if $depends {
+  #   File["/etc/monit/conf.d/${name}.monitrc"] {
+  #     require => Monit::Check::Process[$depends]
+  #   }
+  # }
 }
 
