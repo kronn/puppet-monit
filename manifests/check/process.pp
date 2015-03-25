@@ -48,8 +48,9 @@ define monit::check::process(
     notify  => Service['monit'],
   }
 
-  # TODO a proper puppet-relation could be helpful (or not, depending on the use-case)
-  # if $depends {
+  # TODO a proper puppet-relation could be helpful
+  #      it could be annoying if people manage those services outside of puppet
+  # if $depends and $ensure == present {
   #   File["/etc/monit/conf.d/${name}.monitrc"] {
   #     require => Monit::Check::Process[$depends]
   #   }
