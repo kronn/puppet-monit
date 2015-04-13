@@ -106,22 +106,28 @@ class monit(
   case $::osfamily {
     'Debian': {
       case $::lsbdistcodename {
+        'squeeze', 'lucid': {
+          $default_boot      = 'startup=1'
+          $default_options   = "CHECK_INTERVALS=${monit_pool_interval}"
         # untested and therefore disabled
-        # 'squeeze', 'lucid': {
-        #   $default_boot      = 'startup=1'
-        #   $default_interval  = "CHECK_INTERVALS=${monit_pool_interval}"
         #   $service_hasstatus = false
-        # }
+        }
+        'precise': {
+          $default_boot      = 'START=yes'
+          $default_options   = "MONIT_OPTS=\"-d ${monit_pool_interval}\""
+        # untested and therefore disabled
+        #   $service_hasstatus = true
+        }
         default: {
           $default_boot      = 'START=yes'
-          $default_interval  = "MONIT_OPTS=\"-d ${monit_pool_interval}\""
+          $default_options   = "MONIT_OPTS=\"\""
         # untested and therefore disabled
         #   $service_hasstatus = true
         }
       }
       file { '/etc/default/monit':
         ensure  => present,
-        content => "# managed by puppet\n${default_boot}\n${default_interval}",
+        content => "# managed by puppet\n${default_boot}\n${default_options}",
         before  => Service['monit'],
       }
     }

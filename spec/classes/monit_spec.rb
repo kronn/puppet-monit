@@ -6,11 +6,58 @@ describe 'monit' do
     should contain_service('monit').with_ensure('running')
   end
 
-  it 'starts the service at boot' do
-    should contain_file('/etc/default/monit').
-      with_ensure('present').
-      with_content(/^MONIT_OPTS="-d 120"/).
-      with_content(/^START=yes/)
+  context 'starts the service at boot' do
+    context 'on Ubuntu 12.04 - precise' do
+      let(:facts) {{
+        :lsbdistcodename => 'precise',
+      }}
+
+      it do
+        should contain_file('/etc/default/monit').
+          with_ensure('present').
+          with_content(/^MONIT_OPTS="-d 120"/).
+          with_content(/^START=yes/)
+      end
+    end
+
+    context 'on Ubuntu 14.04 - trusty' do
+      let(:facts) {{
+        :lsbdistcodename => 'trusty',
+      }}
+
+      it do
+        should contain_file('/etc/default/monit').
+          with_ensure('present').
+          with_content(/^MONIT_OPTS=""/).
+          with_content(/^START=yes/)
+      end
+    end
+
+    context 'on Debian 6 - squeeze' do
+      let(:facts) {{
+        :lsbdistcodename => 'squeeze',
+      }}
+
+      it do
+        should contain_file('/etc/default/monit').
+          with_ensure('present').
+          with_content(/^CHECK_INTERVALS=120/).
+          with_content(/^startup=1/)
+      end
+    end
+
+    context 'on Ubuntu 10.04 - lucid' do
+      let(:facts) {{
+        :lsbdistcodename => 'lucid',
+      }}
+
+      it do
+        should contain_file('/etc/default/monit').
+          with_ensure('present').
+          with_content(/^CHECK_INTERVALS=120/).
+          with_content(/^startup=1/)
+      end
+    end
   end
 
   it 'prevents missing directories' do
