@@ -32,6 +32,7 @@ define monit::check::process(
   $ensure       = present,
   $process      = $name,
   $pidfile      = "/var/run/${name}.pid",
+  $matching     = undef,
   $start        = "/etc/init.d/${name} start",
   $start_extras = '',
   $stop         = "/etc/init.d/${name} stop",

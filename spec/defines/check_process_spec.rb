@@ -17,7 +17,7 @@ describe 'monit::check::process' do
     end
   end
 
-  context 'with parameters' do
+  context 'with parameters and pidfile' do
     let(:title) { 'background-worker' }
     let(:params) do
       {
@@ -46,6 +46,32 @@ describe 'monit::check::process' do
   stop program  = "/bin/kill -9 2342" and using the sum
   depends on systemd-database
   group workers!m
+      })
+    end
+  end
+
+  context 'with parameters and matching' do
+    let(:title) { 'irc-bot' }
+    let(:params) do
+      {
+        :matching     => 'hubot -a irc -n botsy',
+        :start        => '/usr/local/bin/hubot -a irc -n botsy',
+        :stop         => '/bin/kill -9 2342',
+        :start_extras => 'and'
+      }
+    end
+
+    it 'includes the parameters in the config' do
+      should contain_file('/etc/monit/conf.d/irc-bot.monitrc').with({
+        'ensure'  => 'present',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0400',
+        'notify'  => 'Service[monit]',
+        'content' => %r!check process irc-bot
+  matching "hubot -a irc -n botsy"
+  start program = "/usr/local/bin/hubot -a irc -n botsy" and
+  stop program  = "/bin/kill -9 2342" !m,
       })
     end
   end

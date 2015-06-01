@@ -3,7 +3,11 @@
 # This file is handled by puppet, all local modifications will be lost
 
 check process <%= @name %>
+<% if @matching -%>
+  matching "<%= @matching %>"
+<% else -%>
   with pidfile "<%= @pidfile %>"
+<% end -%>
   start program = "<%= @start %>" <%= @start_extras %>
   stop program  = "<%= @stop %>" <%= @stop_extras %>
 <% if @depends -%>
