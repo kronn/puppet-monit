@@ -25,7 +25,7 @@ describe "monit::check::process" do
         :start        => "/usr/local/bin/background start",
         :stop         => "/bin/kill -9 2342",
         :start_extras => "as uid appworker and gid application",
-        :stop_extras  => "and using the sum",  # pure noise words, ignored by monit
+        :stop_extras  => "and using the sum", # pure noise words, ignored by monit
         :depends      => "systemd-database",
         :customlines  => [
           "group workers"
