@@ -8,9 +8,11 @@ describe "monit" do
 
   context "starts the service at boot" do
     context "on Ubuntu 12.04 - precise" do
-      let(:facts) {{
-        :lsbdistcodename => "precise",
-      }}
+      let(:facts) do
+        {
+          :lsbdistcodename => "precise",
+        }
+      end
 
       it do
         should contain_file("/etc/default/monit").
@@ -21,9 +23,11 @@ describe "monit" do
     end
 
     context "on Ubuntu 14.04 - trusty" do
-      let(:facts) {{
-        :lsbdistcodename => "trusty",
-      }}
+      let(:facts) do
+        {
+          :lsbdistcodename => "trusty",
+        }
+      end
 
       it do
         should contain_file("/etc/default/monit").
@@ -34,9 +38,11 @@ describe "monit" do
     end
 
     context "on Debian 6 - squeeze" do
-      let(:facts) {{
-        :lsbdistcodename => "squeeze",
-      }}
+      let(:facts) do
+        {
+          :lsbdistcodename => "squeeze",
+        }
+      end
 
       it do
         should contain_file("/etc/default/monit").
@@ -47,9 +53,11 @@ describe "monit" do
     end
 
     context "on Ubuntu 10.04 - lucid" do
-      let(:facts) {{
-        :lsbdistcodename => "lucid",
-      }}
+      let(:facts) do
+        {
+          :lsbdistcodename => "lucid",
+        }
+      end
 
       it do
         should contain_file("/etc/default/monit").
